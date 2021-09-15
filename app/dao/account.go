@@ -48,6 +48,7 @@ func (r *account) Create(ctx context.Context, newAccount *object.Account) (*obje
 	if err != nil {
 		return nil, err
 	}
+	// これが失敗したらロールバックしたほうが良い？
 	ret, err := r.FindByUsername(ctx, newAccount.Username)
 	if err != nil {
 		return nil, err
