@@ -2,6 +2,8 @@ package accounts
 
 import (
 	"encoding/json"
+	"github.com/go-sql-driver/mysql"
+	"github.com/pkg/errors"
 	"net/http"
 
 	"yatter-backend-go/app/domain/object"
@@ -16,7 +18,7 @@ type AddRequest struct {
 
 // Handle request for `POST /v1/accounts`
 func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
-	// ctx := r.Context()
+	ctx := r.Context()
 
 	var req AddRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -31,8 +33,18 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_ = h.app.Dao.Account() // domain/repository の取得
-	panic("Must Implement Account Registration")
+	repoAccount := h.app.Dao.Account() // domain/repository の取得
+	account, err := repoAccount.Create(ctx, account)
+	if err != nil {
+		if mysqlErr, ok := err.(*mysql.MySQLError); ok {
+			if mysqlErr.Number == 1062 {
+				httperror.BadRequest(w, errors.New("User already exists"))
+				return
+			}
+		}
+		httperror.InternalServerError(w, err)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(account); err != nil {
