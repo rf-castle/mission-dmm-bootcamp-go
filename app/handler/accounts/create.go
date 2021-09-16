@@ -36,6 +36,7 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	repoAccount := h.app.Dao.Account() // domain/repository の取得
 	account, err := repoAccount.Create(ctx, account)
 	if err != nil {
+		// Todo: これrepoにエラー出させたほうが良くない？
 		if mysqlErr, ok := err.(*mysql.MySQLError); ok {
 			if mysqlErr.Number == 1062 {
 				httperror.BadRequest(w, errors.New("User already exists"))

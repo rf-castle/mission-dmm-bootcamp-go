@@ -16,6 +16,7 @@ func (h *handler) Fetch(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		httperror.InternalServerError(w, err)
 	}
+	// Todo: When account is nil, then not found user
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(account); err != nil {
 		httperror.InternalServerError(w, err)
