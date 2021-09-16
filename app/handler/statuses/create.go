@@ -13,7 +13,7 @@ type AddRequest struct {
 	// Todo: Media_IDS
 }
 
-func (h *handler) Create(w http.ResponseWriter, r *http.Request){
+func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	account := auth.AccountOf(r)
 	var req AddRequest
@@ -24,8 +24,9 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request){
 	repoAccount := h.app.Dao.Account()
 	repoStatus := h.app.Dao.Status(repoAccount)
 	status, err := repoStatus.Create(ctx, account.ID, req.Status)
-	if err != nil{
+	if err != nil {
 		httperror.InternalServerError(w, err)
+		return
 	}
 	w.Header().Set("Content-Type", "application/json")
 	if err = json.NewEncoder(w).Encode(status); err != nil {
@@ -33,5 +34,3 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request){
 		return
 	}
 }
-
-
