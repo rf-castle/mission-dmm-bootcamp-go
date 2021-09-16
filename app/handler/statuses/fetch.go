@@ -15,8 +15,7 @@ func (h *handler) Fetch(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ctx := r.Context()
-	repoAccount := h.app.Dao.Account()
-	repoStatus := h.app.Dao.Status(repoAccount)
+	repoStatus := h.app.Dao.Status()
 	status, err := repoStatus.FindById(ctx, id)
 	if err != nil {
 		httperror.InternalServerError(w, err)
@@ -27,4 +26,5 @@ func (h *handler) Fetch(w http.ResponseWriter, r *http.Request) {
 		httperror.InternalServerError(w, err)
 		return
 	}
+
 }

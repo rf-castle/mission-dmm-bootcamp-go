@@ -16,8 +16,7 @@ func (h *handler) Delete(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	ctx := r.Context()
-	repoAccount := h.app.Dao.Account()
-	repoStatus := h.app.Dao.Status(repoAccount)
+	repoStatus := h.app.Dao.Status()
 	account := auth.AccountOf(r)
 	status, err := repoStatus.FindById(ctx, id)
 	if err != nil {
