@@ -17,8 +17,9 @@ type handler struct {
 // Create Handler for `/v1/statuses/`
 func NewRouter(app *app.App) http.Handler {
 	r := chi.NewRouter()
-	r.Use(auth.Middleware(app))
 	h := &handler{app: app}
-	r.Post("/", h.Create)
+	middleAuth := auth.Middleware(app)
+	r.With(middleAuth).Post("/", h.Create)
+	r.Get("/{id}", h.Fetch)
 	return r
 }
