@@ -21,5 +21,6 @@ func NewRouter(app *app.App) http.Handler {
 	middleAuth := auth.Middleware(app)
 	r.With(middleAuth).Post("/", h.Create)
 	r.Get("/{id}", h.Fetch)
+	r.With(middleAuth).Delete("/{id}", h.Delete)
 	return r
 }

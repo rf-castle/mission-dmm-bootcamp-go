@@ -59,3 +59,12 @@ func (r *status) Create(ctx context.Context, accountId object.AccountID, content
 	}
 	return r.FindById(ctx, statusId)
 }
+
+func (r *status) Delete(ctx context.Context, id object.StatusId) error {
+	_, err := r.db.ExecContext(
+		ctx,
+		"DELETE FROM status WHERE id = ?",
+		id,
+	)
+	return err
+}
