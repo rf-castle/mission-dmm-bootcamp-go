@@ -21,8 +21,7 @@ func (h *handler) Create(w http.ResponseWriter, r *http.Request) {
 		httperror.BadRequest(w, err)
 		return
 	}
-	repoAccount := h.app.Dao.Account()
-	repoStatus := h.app.Dao.Status(repoAccount)
+	repoStatus := h.app.Dao.Status()
 	status, err := repoStatus.Create(ctx, account.ID, req.Status)
 	if err != nil {
 		httperror.InternalServerError(w, err)
