@@ -68,3 +68,26 @@ func (r *status) Delete(ctx context.Context, id object.StatusId) error {
 	)
 	return err
 }
+
+func (r *status) GetPublic(context context.Context, filter *object.TimeLineFilter) ([]*object.Status, error) {
+	ret := make([]*object.Status, 0, filter.Limit)
+	whereStmt := "WHERE :since_id < id"
+	if filter.MaxId >= 0 {
+		whereStmt += " && id < :max_id"
+	}
+	stmt := "SELECT * FROM status " + whereStmt + " ORDER BY id DESC LIMIT :limit"
+	rows, err := r.db.NamedQueryContext(context, stmt, filter)
+	if err != nil {
+		return nil, err
+	}
+	var i int
+	for i = 0; rows.Next(); i++ {
+		entity := new(object.Status)
+		err = rows.StructScan(entity)
+		if err != nil {
+			return nil, err
+		}
+		ret = append(ret, entity)
+	}
+	return ret, nil
+}
