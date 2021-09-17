@@ -6,12 +6,12 @@ info:
     [irc.freenode.net, #swagger](http://swagger.io/irc/)."
   version: 1.0.0
   title: Swagger Twitter Clone
-  contact: {}
+  contact: { }
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: http://localhost:8080/v1
+  - url: http://localhost:8082/v1
 tags:
   - name: health
     description: Endpoint for healthchecks
@@ -92,7 +92,7 @@ paths:
   /accounts/update_credentials:
     post:
       security:
-      - Auth: []
+        - Auth: [ ]
       tags:
         - accounts
       summary: Updating an account
@@ -151,7 +151,7 @@ paths:
   "/accounts/{username}/follow":
     post:
       security:
-      - Auth: []
+        - Auth: [ ]
       tags:
         - accounts
       summary: Following an account
@@ -244,7 +244,7 @@ paths:
   "/accounts/{username}/unfollow":
     post:
       security:
-      - Auth: []
+        - Auth: [ ]
       tags:
         - accounts
       summary: Unfollowing an account
@@ -267,7 +267,7 @@ paths:
   /accounts/relationships:
     get:
       security:
-      - Auth: []
+        - Auth: [ ]
       tags:
         - accounts
       summary: Getting an account's relationships
@@ -323,7 +323,7 @@ paths:
   /statuses:
     post:
       security:
-      - Auth: []
+        - Auth: [ ]
       tags:
         - statuses
       summary: Posting a new status
@@ -374,7 +374,7 @@ paths:
                 $ref: "#/components/schemas/Status"
     delete:
       security:
-      - Auth: []
+        - Auth: [ ]
       tags:
         - statuses
       summary: Deleting a status
@@ -397,7 +397,7 @@ paths:
   /timelines/home:
     get:
       security:
-      - Auth: []
+        - Auth: [ ]
       tags:
         - timelines
       summary: Retrieving a timeline
